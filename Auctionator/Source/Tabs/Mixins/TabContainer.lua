@@ -11,6 +11,8 @@ local function InitializeFromDetails(details)
 
   frame:SetText(details.textLabel)
 
+  frame:HookScript("OnShow", AuctionatorTabMixin.OnShow)
+
   if not Auctionator.Config.Get(Auctionator.Config.Options.SMALL_TABS) then
     PanelTemplates_TabResize(frame, 20)
   end

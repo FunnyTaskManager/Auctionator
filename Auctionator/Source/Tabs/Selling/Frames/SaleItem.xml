@@ -143,10 +143,13 @@
           <OnClick>self:GetParent():SkipItem()</OnClick>
         </Scripts>
       </Button>
-      <Button name="$parentRefreshButton" inherits="RefreshButtonTemplate">
+      <Button name="$parentRefreshButton" inherits="SquareIconButtonTemplate">
         <Anchors>
           <Anchor point="TOPRIGHT" x="110"/>
         </Anchors>
+        <Attributes>
+          <Attribute name="iconAtlas" value="UI-RefreshButton" type="string"/>
+        </Attributes>
         <Scripts>
           <OnClick>
             self:GetParent():RefreshButtonClicked()

@@ -608,7 +608,7 @@ function AuctionatorSaleItemMixin:PostItem()
 end
 
 function AuctionatorSaleItemMixin:SkipItem()
-  if self.SkipButton:IsEnabled() then
+  if self.SkipButton:IsEnabled() == 1 then
     Auctionator.EventBus:Fire(
       self, Auctionator.Selling.Events.BagItemClicked, self.itemInfo.nextItem
     )
