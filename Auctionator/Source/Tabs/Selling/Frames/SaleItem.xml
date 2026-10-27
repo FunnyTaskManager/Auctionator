@@ -132,6 +132,14 @@
         </Anchors>
         <Scripts>
           <OnClick>self:GetParent():PostItem()</OnClick>
+          <OnEnter>
+            if self.tooltip then
+              GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+              GameTooltip_AddColoredLine(GameTooltip, self.tooltip, RED_FONT_COLOR, true)
+              GameTooltip:Show()
+            end
+          </OnEnter>
+          <OnLeave>GameTooltip:Hide()</OnLeave>
         </Scripts>
       </Button>
       <Button parentKey="SkipButton" name="AuctionatorSkipPostingButton" inherits="UIPanelButtonTemplate" text="AUCTIONATOR_L_SKIP" hidden="true">

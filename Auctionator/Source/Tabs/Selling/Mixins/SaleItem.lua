@@ -506,6 +506,29 @@ function AuctionatorSaleItemMixin:ProcessItemResults(itemKey)
   self:UpdateSalesPrice(postingPrice)
 end
 
+function AuctionatorSaleItemMixin:GetPostPriceTotal()
+  if self.itemInfo.itemType == Auctionator.Constants.ITEM_TYPES.ITEM then
+    return self.Price:GetAmount()
+  else
+    return self.Price:GetAmount() * self.Quantity:GetNumber()
+  end
+end
+
+function AuctionatorSaleItemMixin:GetMaxPriceError()
+  if self.itemInfo == nil then
+    return nil
+  end
+
+  local maxBidPrice, isLevel = C_AuctionHouse.GetMaxBidPrice()
+  if self:GetPostPriceTotal() <= maxBidPrice then
+    return nil
+  elseif isLevel then
+    return AUCTION_HOUSE_SELL_FRAME_ERROR_MAX_PRICE_LEVEL:format(maxBidPrice / 10000)
+  else
+    return AUCTION_HOUSE_SELL_FRAME_ERROR_MAX_PRICE
+  end
+end
+
 function AuctionatorSaleItemMixin:GetPostButtonState()
   return
     self.itemInfo ~= nil and
@@ -526,6 +549,8 @@ function AuctionatorSaleItemMixin:GetPostButtonState()
     -- Bid price is not bigger than buyout
     self.BidPrice:GetAmount() <= self.Price:GetAmount() and
 
+    self:GetMaxPriceError() == nil and
+
     -- Not throttled (to avoid silent post failure)
     Auctionator.AH.IsNotThrottled()
 end
@@ -536,6 +561,7 @@ function AuctionatorSaleItemMixin:UpdatePostButtonState()
   else
     self.PostButton:Disable()
   end
+  self.PostButton.tooltip = self:GetMaxPriceError()
 end
 
 function AuctionatorSaleItemMixin:UpdateSkipButtonState()
